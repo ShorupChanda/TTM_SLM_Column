@@ -1,0 +1,33 @@
+#creating a Powder Ball of Ni
+
+
+units		    metal
+dimension   	3
+boundary 	    p p p
+
+atom_style	    atomic
+
+lattice	        fcc 3.529
+region		    ball sphere 0 0 0 35.2 units box
+create_box	    1 ball
+create_atoms	1 region ball
+mass		    1 58.693
+
+group	    	ball region ball
+pair_style      eam
+pair_coeff  * * Ni_u3.eam
+
+
+dump		    1 all atom 100 tmp.dump	
+
+minimize	    0 0 5000 5000
+
+thermo		    50
+
+fix 		    1 all nvt temp 300 300 10 
+
+timestep	    0.001
+#run		    10000
+write_data  	oneball.data
+
+unfix		1
